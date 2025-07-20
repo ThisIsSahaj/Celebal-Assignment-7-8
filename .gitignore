@@ -1,0 +1,61 @@
+# === Node ===
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# === Build ===
+dist/
+build/
+
+# If frontend and backend build separately
+frontend/build/
+frontend/dist/
+backend/build/
+backend/dist/
+
+# === Logs ===
+logs/
+*.log
+
+# === Environment Variables ===
+.env
+.env.*.local
+
+# === OS Files ===
+.DS_Store
+Thumbs.db
+
+# === Editor Directories ===
+.vscode/
+.idea/
+
+# === Cache and Misc ===
+.cache/
+frontend/.next/
+frontend/.vite/
+backend/.next/
+*.tsbuildinfo
+*.eslintcache
+*.coverage
+coverage/
+*.tgz
+
+# === Database / Local Dev ===
+*.sqlite
+*.db
+*.db-journal
+dump.rdb
+
+# === Docker ===
+docker-compose.override.yml
+docker-compose.local.yml
+*.container
+
+# === Others ===
+*.pid
+*.seed
+*.pid.lock
+*.log
