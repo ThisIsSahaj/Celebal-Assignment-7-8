@@ -1,6 +1,7 @@
 const Product = require('../models/productModel');
 const ErrorHandler = require('../utils/errorhandler');
-const catchAsyncErrors = require('../middleware/catchAsyncErrors')
+const catchAsyncErrors = require('../middleware/catchAsyncErrors');
+const ApiFeatures = require('../utils/apifeatures');
 
 
 //📍 Create Product -- ADMIN
@@ -17,7 +18,26 @@ exports.createProduct = catchAsyncErrors(async (req, res, next) => {
 //📍 GET ALL PRODUCTS
 exports.getAllProducts = catchAsyncErrors(async (req, res) => {
 
-    const products = await Product.find();
+
+    const resultPerPage = 5;
+    const productCount = await Product.countDocuments();
+
+    // search & filter a product also pagination
+    const apiFeature = new ApiFeatures(Product.find(), req.query)
+        .search()
+        .filter()
+        .pagination(resultPerPage);
+
+    // can also be req.query.keyword -- but we will take .keyword in apiFeatures itself
+
+    // as we are passing Product.find() above in ApiFeatures, and it is returning Class ApiFeatures which we are storing in apiFeature constant
+    // so we cannot do same Product.find() below to get a product
+    // therefore as we have stored the Class ApiFeatures as a Value in apiFeature constant above we will just write apiFeature.query because we got all the methods of the Class as we have returned "this" in ApiFeatures Class
+
+    // const products = await Product.find();
+    const products = await apiFeature.query;
+
+    // Now goto PostMan and try searching http://localhost:4000/api/v1/products?keyword=macbook in GETALLPRODUCTS
 
     res.status(200).json({
         // message: "Route is working fine!"
@@ -50,7 +70,8 @@ exports.getProductDetails = catchAsyncErrors(async (req, res, next) => {
     // send product details
     res.status(200).json({
         success: true,
-        product
+        product,
+        productCount
     })
 });
 
@@ -92,7 +113,7 @@ exports.deleteProduct = catchAsyncErrors(async (req, res, next) => {
     const product = await Product.findById(req.params.id);
 
     // handle if not found
-    if(!product) {
+    if (!product) {
         return next(new ErrorHandler("Product Not Found", 404));
     }
 
