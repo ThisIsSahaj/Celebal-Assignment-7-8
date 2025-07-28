@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const { type } = require("os");
 const { relative } = require("path");
 
-const productSchema = mongoose.Schema({
+const productSchema = new mongoose.Schema({
     name: {
         type: String,
         required: [true, "Please Enter Product Name"],
@@ -65,6 +65,14 @@ const productSchema = mongoose.Schema({
             },
         }
     ],
+
+
+    // define which user has created the product
+    user:{
+        type: mongoose.Schema.ObjectId,
+        ref: "User",
+        required: true,
+    },
     createdAt:{
         type:Date,
         default:Date.now

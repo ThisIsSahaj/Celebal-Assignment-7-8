@@ -37,3 +37,30 @@ we will get error - ReferenceError: youtube is not defined
 - add  `app.set('query parser', 'extended');` in `app.js` It configures Express to use the advanced 'qs' library for parsing URLs, which understands nested objects
 
 # 🔒 Backend User & Password Authentication
+## Dependencies
+```
+npm i bcryptjs jsonwebtoken validator nodemailer cookie-parser body-parser
+```
+- `bcryptjs` : will convert password in hash and then store
+- `jsonwebtoken` : to generate token
+- `validator` : to validate fields, email field should have email only
+- `nodemailer` : for forgot password functionality, it will send OTP or Link on E-mail
+- `cookie-parser` : to store generated jsonwebtoken in cookie because it is not accessible from frontend
+- `body-parser`
+
+## Create Files
+- `models/userModel.js`
+- `controllers/userController.js`
+- `routes/userRoute.js`
+- `utils/jwtToken.js`
+- `middleware/auth.js`
+
+## Authentication (Making Protected Routes)
+- import and use cookie-parser in app.js
+- in auth.js, compare token from cookie
+- if token found, then verify from user id for that token, and then let them access protected routes 
+- to make a route protected, just add another paramater to it : Eg: isAuthenticatedUser from auth.js
+- Eg: router.route("/product/new").post(isAuthenticatedUser, createProduct);
+- Create function to protect admin access - `authorizeRoles` in `auth.js`
+
+
